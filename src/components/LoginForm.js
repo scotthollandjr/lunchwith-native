@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
 import { emailChanged, passwordChanged } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 
@@ -14,7 +15,7 @@ class LoginForm extends Component {
   }
 
   onButtonPress() {
-    return;
+    Actions.main();
   }
 
   render() {
