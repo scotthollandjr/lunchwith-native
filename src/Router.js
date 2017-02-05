@@ -7,11 +7,11 @@ import MainMap from './components/MainMap';
 const RouterComponent = () => {
   return (
     <Router sceneStyle={ styles.global }>
-      <Scene key="auth" initial>
-        <Scene key="login" component={LoginForm} title="Login" />
-        <Scene key="signup" component={SignupForm} title="Signup" initial />
+      <Scene key="auth">
+        <Scene key="login" component={LoginForm} title="Login" initial />
+        <Scene key="signup" component={SignupForm} title="Signup" />
       </Scene>
-      <Scene key="main">
+      <Scene key="main" initial>
         <Scene key="map" component={MainMap} title="LunchWith" initial />
       </Scene>
     </Router>

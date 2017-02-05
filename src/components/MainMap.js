@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
 import {AppRegistry, StyleSheet, Text, View, Dimensions} from 'react-native';
 var {height, width} = Dimensions.get('window');
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 45.526977;
 const LONGITUDE = -122.683028;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
+let id = 0;
 
 let cats = [
   {
@@ -16,8 +18,10 @@ let cats = [
     last_name: "Sunflower",
     skills: ["", "", ""],
     bio: "My name is Appa",
-    longitude: -122.6804352795281,
-    latitude: 45.49031028995796,
+    coordinate: {
+      longitude: -122.6804352795281,
+      latitude: 45.49031028995796,
+    }
   },
   {
     id: 1,
@@ -25,8 +29,10 @@ let cats = [
     last_name: "Skinny Mac",
     skills: ["", "", ""],
     bio: "My name is Eli",
-    longitude: -122.6927766289744,
-    latitude: 45.52556019729369,
+    coordinate: {
+      longitude: -122.6927766289744,
+      latitude: 45.52556019729369,
+    }
   },
   {
     id: 2,
@@ -34,8 +40,10 @@ let cats = [
     last_name: "Princess",
     skills: ["", "", ""],
     bio: "My name is Breakfast",
-    longitude: -122.6799167354337,
-    latitude: 45.52846642077944,
+    coordinate: {
+      longitude: -122.6799167354337,
+      latitude: 45.52846642077944,
+    }
   },
   {
     id: 3,
@@ -43,8 +51,10 @@ let cats = [
     last_name: "Queg",
     skills: ["", "", ""],
     bio: "My name is QueeQueg",
-    longitude: -122.6789833560638,
-    latitude: 45.52120058053362,
+    coordinate: {
+      longitude: -122.6789833560638,
+      latitude: 45.52120058053362,
+    }
   },
   {
     id: 4,
@@ -52,8 +62,10 @@ let cats = [
     last_name: "Cheetoh",
     skills: ["", "", ""],
     bio: "My name is Chester",
-    longitude: -122.6861392645663,
-    latitude: 45.51553257367652,
+    coordinate: {
+      longitude: -122.6861392645663,
+      latitude: 45.51553257367652,
+    }
   },
   {
     id: 5,
@@ -61,8 +73,10 @@ let cats = [
     last_name: "Holla",
     skills: ["", "", ""],
     bio: "My name is Riff-Raff",
-    longitude: -122.6968212729106,
-    latitude: 45.51989262962709,
+    coordinate: {
+      longitude: -122.6968212729106,
+      latitude: 45.51989262962709,
+    }
   },
   {
     id: 6,
@@ -70,8 +84,10 @@ let cats = [
     last_name: "McIntire",
     skills: ["", "", ""],
     bio: "My name is Lil' Douggie",
-    longitude: -122.6551303277222,
-    latitude: 45.52011062355635,
+    coordinate: {
+      longitude: -122.6551303277222,
+      latitude: 45.52011062355635,
+    }
   },
   {
     id: 7,
@@ -79,8 +95,10 @@ let cats = [
     last_name: "of Skuntank",
     skills: ["", "", ""],
     bio: "My name is Feli",
-    longitude: -122.6635307420512,
-    latitude: 45.53260752981592,
+    coordinate: {
+      longitude: -122.6635307420512,
+      latitude: 45.53260752981592,
+    },
   },
   {
     id: 8,
@@ -88,8 +106,10 @@ let cats = [
     last_name: "King",
     skills: ["", "", ""],
     bio: "My name is Zoe",
-    longitude: -122.6758720914976,
-    latitude: 45.53979925769482,
+    coordinate: {
+      longitude: -122.6758720914976,
+      latitude: 45.53979925769482,
+    }
   },
   {
     id: 9,
@@ -97,8 +117,10 @@ let cats = [
     last_name: "Hou",
     skills: ["", "", ""],
     bio: "My name is Bohdi",
-    longitude: -122.6698569800027,
-    latitude: 45.50717485546119,
+    coordinate: {
+      longitude: -122.6698569800027,
+      latitude: 45.50717485546119,
+    }
   }
 ]
 
@@ -112,20 +134,7 @@ class MainMap extends Component {
   }
 
   onMapPress(event) {
-
-    // for (cat of cats) {
-    //   this.setState({
-    //     markers: [
-    //       ...this.state.markers,
-    //       {
-    //         coordinate: cat.latitude + ', ' + cat.longitude,
-    //         key: cat.id,
-    //         color: '#fff',
-    //       },
-    //     ],
-    //   });
-    //   console.log(cat.first_name);
-    // }
+    return;
   }
 
   render() {
@@ -140,7 +149,15 @@ class MainMap extends Component {
             longitudeDelta: LATITUDE_DELTA * ASPECT_RATIO,
           }}
           onPress={(event) => this.onMapPress(event)}
-        />
+        >
+          {cats.map(cat => (
+            <Marker
+              coordinate={cat.coordinate}
+              key={cat.id}
+              title={cat.first_name}
+              />
+          ))}
+        </MapView>
       </View>
     );
   }
