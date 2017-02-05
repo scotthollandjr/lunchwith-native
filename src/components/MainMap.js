@@ -250,6 +250,7 @@ class MainMap extends Component {
       <View style={styles.container, customStyle}>
         <MapView
           style={styles.map}
+          customMapStyle={customStyle}
           initialRegion={{
             latitude: LATITUDE,
             longitude: LONGITUDE,
@@ -257,7 +258,6 @@ class MainMap extends Component {
             longitudeDelta: LATITUDE_DELTA * ASPECT_RATIO,
           }}
           onPress={(event) => this.onMapPress(event)}
-          customMapStyle={customStyle}
         />
       </View>
     );
