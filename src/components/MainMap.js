@@ -102,123 +102,6 @@ let cats = [
   }
 ]
 
-const customStyle = [
-  {
-    featureType: "landscape.man_made",
-    stylers: [
-      {
-        color: "#4b4b4b",
-      },
-    ],
-  },
-  {
-    featureType: "landscape.natural",
-    stylers: [
-      {
-        color: "#5f5f5f",
-      },
-    ],
-  },
-  {
-    featureType: "administrative",
-    stylers: [
-      {
-        color: "#5f5f5f",
-      },
-    ],
-  },
-  {
-    featureType: "administrative",
-    elementType: "labels.icon",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
-  {
-    elementType: "labels.text.fill",
-    stylers: [
-      {
-        color: "#ebebeb",
-      },
-    ],
-  },
-  {
-    featureType: "water",
-    stylers: [
-      {
-        color: "#808080",
-      },
-    ],
-  },
-  {
-    featureType: "transit",
-    elementType: "labels",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
-  {
-    featureType: "transit.line",
-    stylers: [
-      {
-        color: "#333333",
-      },
-    ],
-  },
-  {
-    featureType: "road",
-    stylers: [
-      {
-        color: "#333333",
-      },
-    ],
-  },
-  {
-    featureType: "road.highway",
-    stylers: [
-      {
-        color: "#3d3d3d",
-      },
-    ],
-  },
-  {
-    elementType: "labels.text.fill",
-    stylers: [
-      {
-        color: "#ebebeb",
-      },
-    ],
-  },
-  {
-    elementType: "labels.text.stroke",
-    stylers: [
-      {
-        color: "#000000",
-      },
-    ],
-  },
-  {
-    featureType: "poi",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
-  {
-    featureType: "transit.station.airport",
-    stylers: [
-      {
-        color: "#4b4b4b",
-      },
-    ],
-  },
-]
-
 class MainMap extends Component {
   constructor(props) {
     super(props);
@@ -247,10 +130,9 @@ class MainMap extends Component {
 
   render() {
     return (
-      <View style={styles.container, customStyle}>
+      <View style={styles.container}>
         <MapView
           style={styles.map}
-          customMapStyle={customStyle}
           initialRegion={{
             latitude: LATITUDE,
             longitude: LONGITUDE,
@@ -278,3 +160,120 @@ const styles = StyleSheet.create({
 });
 
 export default MainMap;
+
+// const customStyle = [
+//   {
+//     featureType: "landscape.man_made",
+//     stylers: [
+//       {
+//         color: "#4b4b4b",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "landscape.natural",
+//     stylers: [
+//       {
+//         color: "#5f5f5f",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "administrative",
+//     stylers: [
+//       {
+//         color: "#5f5f5f",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "administrative",
+//     elementType: "labels.icon",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
+//   {
+//     elementType: "labels.text.fill",
+//     stylers: [
+//       {
+//         color: "#ebebeb",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "water",
+//     stylers: [
+//       {
+//         color: "#808080",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "transit",
+//     elementType: "labels",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "transit.line",
+//     stylers: [
+//       {
+//         color: "#333333",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "road",
+//     stylers: [
+//       {
+//         color: "#333333",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "road.highway",
+//     stylers: [
+//       {
+//         color: "#3d3d3d",
+//       },
+//     ],
+//   },
+//   {
+//     elementType: "labels.text.fill",
+//     stylers: [
+//       {
+//         color: "#ebebeb",
+//       },
+//     ],
+//   },
+//   {
+//     elementType: "labels.text.stroke",
+//     stylers: [
+//       {
+//         color: "#000000",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "poi",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "transit.station.airport",
+//     stylers: [
+//       {
+//         color: "#4b4b4b",
+//       },
+//     ],
+//   },
+// ]

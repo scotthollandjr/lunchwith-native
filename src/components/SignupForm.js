@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
-import { emailChanged, passwordChanged, loginUser } from '../actions';
+import {
+  emailChanged,
+  passwordChanged,
+  conPasswordChanged,
+  signupUser
+} from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 
-class LoginForm extends Component {
+class SignupForm extends Component {
   onEmailChange(text) {
     this.props.emailChanged(text);
   }
@@ -14,14 +19,18 @@ class LoginForm extends Component {
     this.props.passwordChanged(text);
   }
 
-  onButtonPress() {
-    const { email, password } = this.props;
+  onConPasswordChange(text) {
+    this.props.conPasswordChanged(text);
+  }
 
-    this.props.loginUser({ email, password });
+  onButtonPress() {
+    const { email, password, conPassword } = this.props;
+
+    this.props.signupUser({ email, password, conPassword });
   }
 
   onLinkClick() {
-    Actions.signup({ type: 'reset' });
+    Actions.login({ type: 'reset' });
   }
 
   renderButton() {
@@ -31,7 +40,7 @@ class LoginForm extends Component {
 
     return (
       <Button
-        text="Login"
+        text="Signup"
         onPress={this.onButtonPress.bind(this)}
       >
       </Button>
@@ -52,11 +61,19 @@ class LoginForm extends Component {
           </CardSection>
           <CardSection>
             <Input
+              secureTextEntry
               label="Password"
               placeholder="password"
               onChangeText={this.onPasswordChange.bind(this)}
               value={this.props.password}
+            />
+          </CardSection>
+          <CardSection>
+            <Input
               secureTextEntry
+              placeholder="confirm password"
+              onChangeText={this.onConPasswordChange.bind(this)}
+              value={this.props.conPassword}
             />
           </CardSection>
 
@@ -71,7 +88,7 @@ class LoginForm extends Component {
         <TouchableWithoutFeedback onPress={this.onLinkClick}>
           <View>
             <Text style={styles.linkText}>
-              Need an account? Sign up.
+              Already have an account? Log in.
             </Text>
           </View>
         </TouchableWithoutFeedback>
@@ -82,6 +99,7 @@ class LoginForm extends Component {
 
 const styles = {
   errorText: {
+    padding: 5,
     fontSize: 15,
     color: 'red',
     alignSelf: 'center',
@@ -96,9 +114,9 @@ const styles = {
 };
 
 const mapStateToProps = ({ auth }) => {
-  const { email, password, error, loading } = auth;
+  const { email, password, conPassword, error, loading } = auth;
 
-  return { email, password, error, loading };
+  return { email, password, conPassword, error, loading };
 }
 
-export default connect(mapStateToProps, {emailChanged, passwordChanged, loginUser})(LoginForm);
+export default connect(mapStateToProps, {emailChanged, passwordChanged, conPasswordChanged, signupUser})(SignupForm);
