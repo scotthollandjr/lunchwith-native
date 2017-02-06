@@ -1,5 +1,9 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, Text, View, Dimensions} from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, Dimensions, TouchableHighlight } from 'react-native';
+import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
+import { selectUser } from '../actions';
+import BioModal from './BioModal';
 var {height, width} = Dimensions.get('window');
 import MapView, { Marker } from 'react-native-maps';
 
@@ -11,7 +15,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 let id = 0;
 
-let cats = [
+let users = [
   {
     id: 0,
     first_name: "Appa",
@@ -129,12 +133,19 @@ class MainMap extends Component {
     super(props);
 
     this.state = {
-      markers: []
+      markers: [],
+      showModal: false,
     };
   }
 
   onMapPress(event) {
     return;
+  }
+
+  onMarkerClick(user) {
+    console.log(user);
+    this.props.selectUser({ user });
+    this.setState({ showModal: true });
   }
 
   render() {
@@ -150,14 +161,20 @@ class MainMap extends Component {
           }}
           onPress={(event) => this.onMapPress(event)}
         >
-          {cats.map(cat => (
-            <Marker
-              coordinate={cat.coordinate}
-              key={cat.id}
-              title={cat.first_name}
-              />
+          {users.map(user => (
+            <MapView.Marker
+              coordinate={user.coordinate}
+              key={user.id}
+              title={user.first_name + ' ' + user.last_name}
+              onPress={() => this.onMarkerClick(user)}>
+            </MapView.Marker>
           ))}
         </MapView>
+        <BioModal
+          visible={this.state.showModal}
+          user={this.props.user}
+        >
+        </BioModal>
       </View>
     );
   }
@@ -176,7 +193,13 @@ const styles = StyleSheet.create({
   }
 });
 
-export default MainMap;
+const mapStateToProps = ({ map }) => {
+  const { user } = map;
+
+  return { user };
+}
+
+export default connect(mapStateToProps, {selectUser})(MainMap);
 
 // const customStyle = [
 //   {
