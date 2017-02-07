@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { AppRegistry, StyleSheet, Text, View, Dimensions, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
-import { selectUser } from '../actions';
+import { selectUser, toggleBiomodal } from '../actions';
 import BioModal from './BioModal';
 var {height, width} = Dimensions.get('window');
 import MapView, { Marker } from 'react-native-maps';
@@ -20,8 +20,9 @@ let users = [
     id: 0,
     first_name: "Appa",
     last_name: "Sunflower",
-    skills: ["", "", ""],
+    skills: ["Biting", "Cross-Eyes", "Q-Tips"],
     bio: "My name is Appa",
+    avatarUrl: "https://s-media-cache-ak0.pinimg.com/736x/58/2b/fa/582bfac8dab69c53984c2fa8642db942.jpg",
     coordinate: {
       longitude: -122.6804352795281,
       latitude: 45.49031028995796,
@@ -31,8 +32,9 @@ let users = [
     id: 1,
     first_name: "Eli",
     last_name: "Skinny Mac",
-    skills: ["", "", ""],
+    skills: ["Ears", "Climbing", "Baby Mice"],
     bio: "My name is Eli",
+    avatarUrl: "https://s-media-cache-ak0.pinimg.com/736x/85/a7/39/85a739f5737ceced2aedbb8f31178d74.jpg",
     coordinate: {
       longitude: -122.6927766289744,
       latitude: 45.52556019729369,
@@ -41,9 +43,10 @@ let users = [
   {
     id: 2,
     first_name: "Breakfast",
-    last_name: "Princess",
-    skills: ["", "", ""],
+    last_name: "Anne",
+    skills: ["Sneezing", "Dinner", "Mutton Chops"],
     bio: "My name is Breakfast",
+    avatarUrl: "https://pbs.twimg.com/profile_images/506522217052528640/wBUjUJSK_400x400.jpeg",
     coordinate: {
       longitude: -122.6799167354337,
       latitude: 45.52846642077944,
@@ -53,8 +56,9 @@ let users = [
     id: 3,
     first_name: "Quee",
     last_name: "Queg",
-    skills: ["", "", ""],
+    skills: ["Subaru", "Porch Lights", "Picking Fights"],
     bio: "My name is QueeQueg",
+    avatarUrl: "https://pbs.twimg.com/profile_images/708067740888801280/7rTsSuBP.jpg",
     coordinate: {
       longitude: -122.6789833560638,
       latitude: 45.52120058053362,
@@ -64,8 +68,9 @@ let users = [
     id: 4,
     first_name: "Chester",
     last_name: "Cheetoh",
-    skills: ["", "", ""],
+    skills: ["Rocks", "Star Trek", "Other Cats"],
     bio: "My name is Chester",
+    avatarUrl: "https://pbs.twimg.com/profile_images/668439459986350081/gfVktJWg.jpg",
     coordinate: {
       longitude: -122.6861392645663,
       latitude: 45.51553257367652,
@@ -75,8 +80,9 @@ let users = [
     id: 5,
     first_name: "Riff-Raff",
     last_name: "Holla",
-    skills: ["", "", ""],
+    skills: ["Tattoos", "Doritos", "Ska"],
     bio: "My name is Riff-Raff",
+    avatarUrl: "https://ih1.redbubble.net/image.73670090.0092/flat,1000x1000,075,f.u2.jpg",
     coordinate: {
       longitude: -122.6968212729106,
       latitude: 45.51989262962709,
@@ -86,8 +92,9 @@ let users = [
     id: 6,
     first_name: "Lil' Douggie",
     last_name: "McIntire",
-    skills: ["", "", ""],
+    skills: ["Green Shakes", "Charcuterie", "Drones"],
     bio: "My name is Lil' Douggie",
+    avatarUrl: "https://s-media-cache-ak0.pinimg.com/236x/1b/92/e2/1b92e2949becda1f180d46fc4b546690.jpg",
     coordinate: {
       longitude: -122.6551303277222,
       latitude: 45.52011062355635,
@@ -97,8 +104,9 @@ let users = [
     id: 7,
     first_name: "Feli",
     last_name: "of Skuntank",
-    skills: ["", "", ""],
+    skills: ["Cigarettes", "PBR", "Thrash Brass"],
     bio: "My name is Feli",
+    avatarUrl: "https://s-media-cache-ak0.pinimg.com/originals/95/ed/a7/95eda7740e1745ccd6ac85250e7b42f6.jpg",
     coordinate: {
       longitude: -122.6635307420512,
       latitude: 45.53260752981592,
@@ -108,8 +116,9 @@ let users = [
     id: 8,
     first_name: "Zoe",
     last_name: "King",
-    skills: ["", "", ""],
+    skills: ["String", "Donuts", "Reeses"],
     bio: "My name is Zoe",
+    avatarUrl: "https://s-media-cache-ak0.pinimg.com/736x/34/ba/db/34badbcd09831ed25743cb2850177737.jpg",
     coordinate: {
       longitude: -122.6758720914976,
       latitude: 45.53979925769482,
@@ -119,8 +128,9 @@ let users = [
     id: 9,
     first_name: "Bohdi",
     last_name: "Hou",
-    skills: ["", "", ""],
+    skills: ["Dim Sum", "Kibble", "Fusion"],
     bio: "My name is Bohdi",
+    avatarUrl: "https://www.sturbridgeyankee.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/b/r/brown_tabby_cat_1.jpg",
     coordinate: {
       longitude: -122.6698569800027,
       latitude: 45.50717485546119,
@@ -134,7 +144,6 @@ class MainMap extends Component {
 
     this.state = {
       markers: [],
-      showModal: false,
     };
   }
 
@@ -145,7 +154,7 @@ class MainMap extends Component {
   onMarkerClick(user) {
     console.log(user);
     this.props.selectUser({ user });
-    this.setState({ showModal: true });
+    this.props.toggleBiomodal();
   }
 
   render() {
@@ -171,7 +180,7 @@ class MainMap extends Component {
           ))}
         </MapView>
         <BioModal
-          visible={this.state.showModal}
+          visible={this.props.showModal}
           user={this.props.user}
         >
         </BioModal>
@@ -194,12 +203,12 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ map }) => {
-  const { user } = map;
+  const { user, showModal } = map;
 
-  return { user };
+  return { user, showModal };
 }
 
-export default connect(mapStateToProps, {selectUser})(MainMap);
+export default connect(mapStateToProps, {selectUser, toggleBiomodal})(MainMap);
 
 // const customStyle = [
 //   {

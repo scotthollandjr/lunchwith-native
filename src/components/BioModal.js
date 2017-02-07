@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, Modal } from 'react-native';
-import { CardSection, Button } from './common';
+import { Text, View, Modal, TouchableWithoutFeedback, Image } from 'react-native';
+import { Card, CardSection, Button } from './common';
 import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
+import { toggleBiomodal } from '../actions';
 
 class BioModal extends Component {
   renderData() {
@@ -12,14 +14,37 @@ class BioModal extends Component {
     let user = this.props.user.user;
 
     return (
-      <CardSection style={styles.cardSectionStyle}>
-        <Text style={styles.textStyle}>
-          {user.first_name} {user.last_name}
-        </Text>
-        <Text style={styles.textStyle}>
-          {user.bio}
-        </Text>
-      </CardSection>
+      <Card>
+        <CardSection style={styles.cardSectionStyle}>
+          <Image
+            style={styles.avatarImageStyle}
+            source={{uri: user.avatarUrl}}
+          />
+        </CardSection>
+        <CardSection style={styles.cardSectionStyle}>
+          <Text style={styles.textStyle}>
+            {user.first_name} {user.last_name}
+          </Text>
+        </CardSection>
+        <CardSection style={styles.cardSectionStyle}>
+          <Text style={styles.textStyle}>
+            {user.bio}
+          </Text>
+        </CardSection>
+        <CardSection style={styles.cardSectionStyle}>
+          <Text style={styles.textStyle}>
+            Skills: {user.skills[0] + ', ' + user.skills[1] + ', ' + user.skills[2] }
+          </Text>
+        </CardSection>
+        <CardSection style={styles.cardSectionStyle}>
+          <Button
+            text="Send Message"
+          />
+          <Button
+            text="Suck Duck"
+          />
+        </CardSection>
+      </Card>
     );
   }
 
@@ -46,9 +71,11 @@ class BioModal extends Component {
         animationType="slide"
         onRequestClose={() => {}}
       >
-      <View style={styles.containerStyle}>
-        {this.renderData()}
-      </View>
+        <TouchableWithoutFeedback onPress={() => this.props.toggleBiomodal()}>
+          <View style={styles.containerStyle}>
+            {this.renderData()}
+          </View>
+        </TouchableWithoutFeedback>
       </Modal>
     );
   }
@@ -68,8 +95,20 @@ const styles = {
     backgroundColor: 'rgba(0, 0, 0, 0.25)',
     position: 'relative',
     flex: 1,
+    height: 500,
+    justifyContent: 'center',
+  },
+  avatarImageStyle: {
+    height: 350,
+    width: 350,
     justifyContent: 'center',
   }
 };
 
-export default BioModal;
+const mapStateToProps = ({ map }) => {
+  const { showModal } = map;
+
+  return { showModal };
+}
+
+export default connect(mapStateToProps, {toggleBiomodal})(BioModal);
