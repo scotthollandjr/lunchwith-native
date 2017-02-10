@@ -1,5 +1,15 @@
 import React, {Component} from 'react';
-import { AppRegistry, StyleSheet, Text, View, Dimensions, TouchableHighlight } from 'react-native';
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  TouchableHighlight,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Image
+} from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { selectUser, toggleBiomodal } from '../actions';
@@ -7,6 +17,7 @@ import BioModal from './BioModal';
 var {height, width} = Dimensions.get('window');
 import MapView, { Marker } from 'react-native-maps';
 
+import CustomCallout from './CustomCallout';
 const ASPECT_RATIO = width / height;
 const LATITUDE = 45.526977;
 const LONGITUDE = -122.683028;
@@ -139,11 +150,32 @@ let users = [
 ]
 
 class MainMap extends Component {
+  componentWillMount() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        var initialPosition = JSON.stringify(position);
+        this.setState({initialPosition});
+      },
+      (error) => alert(error.message),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
+    this.watchID = navigator.geolocation.watchPosition((position) => {
+      var lastPosition = JSON.stringify(position);
+      this.setState({lastPosition});
+    });
+  }
+
   constructor(props) {
     super(props);
 
     this.state = {
       markers: [],
+      region: {
+        latitude: 45.526977,
+        longitude: -122.683028,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      },
     };
   }
 
@@ -152,9 +184,25 @@ class MainMap extends Component {
   }
 
   onMarkerClick(user) {
+    let lat = user.coordinate.latitude - .01;
+    let long = user.coordinate.longitude + .01;
+
+    console.log("lat", lat);
+    console.log("long", long);
+
+    this.setState({ region: {
+      latitude: lat,
+      longitude: long,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+      },
+    });
+  }
+
+  onCalloutClick(user) {
     console.log(user);
-    this.props.selectUser({ user });
-    this.props.toggleBiomodal();
+    // this.props.selectUser({ user });
+    // this.props.toggleBiomodal();
   }
 
   render() {
@@ -162,20 +210,23 @@ class MainMap extends Component {
       <View style={styles.container}>
         <MapView
           style={styles.map}
-          initialRegion={{
-            latitude: LATITUDE,
-            longitude: LONGITUDE,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LATITUDE_DELTA * ASPECT_RATIO,
-          }}
+          region={this.state.region}
           onPress={(event) => this.onMapPress(event)}
         >
           {users.map(user => (
             <MapView.Marker
-              coordinate={user.coordinate}
               key={user.id}
+              coordinate={user.coordinate}
               title={user.first_name + ' ' + user.last_name}
-              onPress={() => this.onMarkerClick(user)}>
+              onPress={() => this.onMarkerClick(user)}
+              >
+              <MapView.Callout
+                tooltip>
+                <CustomCallout
+                  onPress={() => this.onCalloutClick(user)}>
+                  <Text>{user.first_name} {user.last_name} </Text>
+                </CustomCallout>
+              </MapView.Callout>
             </MapView.Marker>
           ))}
         </MapView>
@@ -198,8 +249,17 @@ const styles = StyleSheet.create({
   },
   map: {
     width: width,
-    height: height
-  }
+    height: height,
+  },
+  avatarImageStyle: {
+    height: 150,
+    width: 150,
+    borderRadius: 100,
+  },
+  // customView: {
+  //   width: 150,
+  //   height: 150,
+  // },
 });
 
 const mapStateToProps = ({ map }) => {
