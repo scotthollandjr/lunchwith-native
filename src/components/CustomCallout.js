@@ -1,20 +1,11 @@
+import React, { Component } from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import React, { PropTypes } from 'react';
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
-
-const propTypes = {
-  children: PropTypes.node.isRequired,
-  style: PropTypes.object,
-};
-
-class CustomCallout extends React.Component {
+class CustomCallout extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.amount}>
+        <View style={styles.bubble}>
           {this.props.children}
         </View>
       </View>
@@ -22,25 +13,26 @@ class CustomCallout extends React.Component {
   }
 }
 
-CustomCallout.propTypes = propTypes;
-
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'column',
+    alignSelf: 'flex-start',
+  },
+  bubble: {
     width: 150,
     height: 150,
-    flexDirection: 'row',
+    flexDirection: 'column',
+    alignItems: 'center',
     alignSelf: 'flex-start',
+    justifyContent: 'center',
     backgroundColor: '#fff',
     paddingHorizontal: 20,
-    paddingVertical: 12,
+    paddingVertical: 20,
     borderRadius: 100,
-    borderColor: '#999',
-    borderWidth: 0.5,
-  },
-  amount: {
-    flex: 1,
-    backgroundColor: 'transparent'
+    borderColor: '#fff',
+    borderWidth: 5,
+    overflow: 'hidden',
   },
 });
 
-module.exports = CustomCallout;
+export default CustomCallout;

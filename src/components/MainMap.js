@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+  Animated,
   AppRegistry,
   StyleSheet,
   Text,
@@ -26,12 +27,16 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 let id = 0;
 
+let popupHidden = true;
+
 let users = [
   {
     id: 0,
     first_name: "Appa",
     last_name: "Sunflower",
     skills: ["Biting", "Cross-Eyes", "Q-Tips"],
+    title: "Front-End Engineer",
+    company: "Tacocat Studio",
     bio: "My name is Appa",
     avatarUrl: "https://s-media-cache-ak0.pinimg.com/736x/58/2b/fa/582bfac8dab69c53984c2fa8642db942.jpg",
     coordinate: {
@@ -44,6 +49,8 @@ let users = [
     first_name: "Eli",
     last_name: "Skinny Mac",
     skills: ["Ears", "Climbing", "Baby Mice"],
+    title: "Mobile/Web Developer",
+    company: "PopArt",
     bio: "My name is Eli",
     avatarUrl: "https://s-media-cache-ak0.pinimg.com/736x/85/a7/39/85a739f5737ceced2aedbb8f31178d74.jpg",
     coordinate: {
@@ -56,6 +63,8 @@ let users = [
     first_name: "Breakfast",
     last_name: "Anne",
     skills: ["Sneezing", "Dinner", "Mutton Chops"],
+    title: "Operations Administrator",
+    company: "Rigado, LLC",
     bio: "My name is Breakfast",
     avatarUrl: "https://pbs.twimg.com/profile_images/506522217052528640/wBUjUJSK_400x400.jpeg",
     coordinate: {
@@ -68,6 +77,8 @@ let users = [
     first_name: "Quee",
     last_name: "Queg",
     skills: ["Subaru", "Porch Lights", "Picking Fights"],
+    title: "QA Engineer",
+    company: "+QA",
     bio: "My name is QueeQueg",
     avatarUrl: "https://pbs.twimg.com/profile_images/708067740888801280/7rTsSuBP.jpg",
     coordinate: {
@@ -80,6 +91,8 @@ let users = [
     first_name: "Chester",
     last_name: "Cheetoh",
     skills: ["Rocks", "Star Trek", "Other Cats"],
+    title: "Geologist",
+    company: "USACE",
     bio: "My name is Chester",
     avatarUrl: "https://pbs.twimg.com/profile_images/668439459986350081/gfVktJWg.jpg",
     coordinate: {
@@ -92,6 +105,8 @@ let users = [
     first_name: "Riff-Raff",
     last_name: "Holla",
     skills: ["Tattoos", "Doritos", "Ska"],
+    title: "Product Owner",
+    company: "Tacocat Studios",
     bio: "My name is Riff-Raff",
     avatarUrl: "https://ih1.redbubble.net/image.73670090.0092/flat,1000x1000,075,f.u2.jpg",
     coordinate: {
@@ -104,6 +119,8 @@ let users = [
     first_name: "Lil' Douggie",
     last_name: "McIntire",
     skills: ["Green Shakes", "Charcuterie", "Drones"],
+    title: "Security Engineer",
+    company: "Acceptto",
     bio: "My name is Lil' Douggie",
     avatarUrl: "https://s-media-cache-ak0.pinimg.com/236x/1b/92/e2/1b92e2949becda1f180d46fc4b546690.jpg",
     coordinate: {
@@ -116,6 +133,8 @@ let users = [
     first_name: "Feli",
     last_name: "of Skuntank",
     skills: ["Cigarettes", "PBR", "Thrash Brass"],
+    title: "Graphic Designer",
+    company: "SquareSpace",
     bio: "My name is Feli",
     avatarUrl: "https://s-media-cache-ak0.pinimg.com/originals/95/ed/a7/95eda7740e1745ccd6ac85250e7b42f6.jpg",
     coordinate: {
@@ -128,6 +147,8 @@ let users = [
     first_name: "Zoe",
     last_name: "King",
     skills: ["String", "Donuts", "Reeses"],
+    title: "Marketing Analyst",
+    company: "Cars.com",
     bio: "My name is Zoe",
     avatarUrl: "https://s-media-cache-ak0.pinimg.com/736x/34/ba/db/34badbcd09831ed25743cb2850177737.jpg",
     coordinate: {
@@ -140,6 +161,8 @@ let users = [
     first_name: "Bohdi",
     last_name: "Hou",
     skills: ["Dim Sum", "Kibble", "Fusion"],
+    title: "Product Designer",
+    company: "EyeCue Lab",
     bio: "My name is Bohdi",
     avatarUrl: "https://www.sturbridgeyankee.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/b/r/brown_tabby_cat_1.jpg",
     coordinate: {
@@ -169,6 +192,7 @@ class MainMap extends Component {
     super(props);
 
     this.state = {
+      bounceValue: new Animated.Value(190),
       markers: [],
       region: {
         latitude: 45.526977,
@@ -179,7 +203,31 @@ class MainMap extends Component {
     };
   }
 
-  onMapPress(event) {
+  togglePopup(toggler) {
+    let toValue;
+
+    if (toggler) {
+      toValue = 0;
+      popupHidden = false;
+    }
+
+    if (!toggler) {
+      toValue = 190;
+      popupHidden = true;
+    }
+
+    Animated.spring(
+      this.state.bounceValue,
+      {
+        toValue: toValue,
+        velocity: 1,
+        tension: 1,
+        friction: 5,
+      }
+    ).start();
+  }
+
+  onMapPress() {
     return;
   }
 
@@ -187,8 +235,7 @@ class MainMap extends Component {
     let lat = user.coordinate.latitude - .01;
     let long = user.coordinate.longitude + .01;
 
-    console.log("lat", lat);
-    console.log("long", long);
+
 
     this.setState({ region: {
       latitude: lat,
@@ -197,44 +244,91 @@ class MainMap extends Component {
       longitudeDelta: 0.0421,
       },
     });
+
+    this.togglePopup(true);
+    this.props.selectUser({ user });
   }
 
   onCalloutClick(user) {
-    console.log(user);
-    // this.props.selectUser({ user });
-    // this.props.toggleBiomodal();
+    this.togglePopup(false);
+    this.props.toggleBiomodal();
+  }
+
+  popupRender() {
+    if (this.props.user) {
+      let user = this.props.user.user;
+      return (
+        <TouchableWithoutFeedback
+          onPress={() => this.onCalloutClick(user)}>
+          <View
+            style={styles.popupContainer}>
+            <Text style={styles.popupText1}>
+              {user.first_name} {user.last_name}
+            </Text>
+            <Text style={styles.popupText2}>
+              {user.title} at {user.company}
+            </Text>
+            <View>
+              <Text style={styles.popupText3}>
+                Top Skills:
+              </Text>
+              {user.skills.map((skill, index) => {
+                return (
+                  <Text
+                    key={index}
+                    style={styles.popupText4}>
+                    {skill}
+                  </Text>
+                );
+              })}
+            </View>
+            <Text style={styles.popupText5}>FULL PROFILE</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      )
+    }
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <MapView
-          style={styles.map}
-          region={this.state.region}
-          onPress={(event) => this.onMapPress(event)}
+      <View style={{flex:1}}>
+        <View style={styles.container}>
+          <MapView
+            style={styles.map}
+            region={this.state.region}
+            onPress={(event) => this.onMapPress()}
+          >
+            {users.map(user => (
+              <MapView.Marker
+                key={user.id}
+                coordinate={user.coordinate}
+                title={user.first_name + ' ' + user.last_name}
+                onPress={() => this.onMarkerClick(user)}
+                >
+                <MapView.Callout
+                  tooltip>
+                  <CustomCallout>
+                    <Image
+                      style={styles.avatarImageStyle}
+                      source={{uri: user.avatarUrl}}
+                    />
+                  </CustomCallout>
+                </MapView.Callout>
+              </MapView.Marker>
+            ))}
+          </MapView>
+          <BioModal
+            visible={this.props.showModal}
+            user={this.props.user}
+          >
+          </BioModal>
+        </View>
+        <Animated.View
+          style={[styles.popup,
+            {transform: [{translateY: this.state.bounceValue}]}]}
         >
-          {users.map(user => (
-            <MapView.Marker
-              key={user.id}
-              coordinate={user.coordinate}
-              title={user.first_name + ' ' + user.last_name}
-              onPress={() => this.onMarkerClick(user)}
-              >
-              <MapView.Callout
-                tooltip>
-                <CustomCallout
-                  onPress={() => this.onCalloutClick(user)}>
-                  <Text>{user.first_name} {user.last_name} </Text>
-                </CustomCallout>
-              </MapView.Callout>
-            </MapView.Marker>
-          ))}
-        </MapView>
-        <BioModal
-          visible={this.props.showModal}
-          user={this.props.user}
-        >
-        </BioModal>
+          {this.popupRender()}
+        </Animated.View>
       </View>
     );
   }
@@ -245,21 +339,53 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF'
+    backgroundColor: '#F5FCFF',
+    width: width,
+    height: height,
   },
   map: {
     width: width,
     height: height,
   },
+  popup: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: '#fff',
+    height: 190,
+  },
   avatarImageStyle: {
     height: 150,
     width: 150,
-    borderRadius: 100,
   },
-  // customView: {
-  //   width: 150,
-  //   height: 150,
-  // },
+  popupContainer: {
+    padding: 15,
+    flexDirection: 'column',
+  },
+  popupText1: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  popupText2: {
+    fontStyle: 'italic',
+  },
+  popupText3: {
+    paddingTop: 15,
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  popupText4: {
+    paddingTop: 5,
+    paddingLeft: 15,
+    fontSize: 15,
+  },
+  popupText5: {
+    padding: 10,
+    fontStyle: 'italic',
+    fontSize: 10,
+    alignSelf: 'center',
+  },
 });
 
 const mapStateToProps = ({ map }) => {

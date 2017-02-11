@@ -38,10 +38,10 @@ class BioModal extends Component {
         </CardSection>
         <CardSection style={styles.cardSectionStyle}>
           <Button
-            text="Send Message"
+          text="Something Else"
           />
           <Button
-            text="Suck Duck"
+            text="Send Message"
           />
         </CardSection>
       </Card>
