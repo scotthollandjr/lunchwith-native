@@ -11,10 +11,14 @@ import {
   TouchableWithoutFeedback,
   Image
 } from 'react-native';
+import {
+  Card,
+  CardSection,
+  Button
+} from './common';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { selectUser, toggleBiomodal } from '../actions';
-import BioModal from './BioModal';
 var {height, width} = Dimensions.get('window');
 import MapView, { Marker } from 'react-native-maps';
 
@@ -28,6 +32,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 let id = 0;
 
 let popupHidden = true;
+let popupHidden2 = true;
 
 let users = [
   {
@@ -192,7 +197,8 @@ class MainMap extends Component {
     super(props);
 
     this.state = {
-      bounceValue: new Animated.Value(190),
+      bounceValue: new Animated.Value(225),
+      bounceValue2: new Animated.Value(475),
       markers: [],
       region: {
         latitude: 45.526977,
@@ -212,12 +218,36 @@ class MainMap extends Component {
     }
 
     if (!toggler) {
-      toValue = 190;
+      toValue = 225;
       popupHidden = true;
     }
 
     Animated.spring(
       this.state.bounceValue,
+      {
+        toValue: toValue,
+        velocity: 1,
+        tension: 1,
+        friction: 5,
+      }
+    ).start();
+  }
+
+  togglePopup2(toggler) {
+    let toValue;
+
+    if (toggler) {
+      toValue = 0;
+      popupHidden2 = false;
+    }
+
+    if (!toggler) {
+      toValue = 475;
+      popupHidden2 = true;
+    }
+
+    Animated.spring(
+      this.state.bounceValue2,
       {
         toValue: toValue,
         velocity: 1,
@@ -235,8 +265,6 @@ class MainMap extends Component {
     let lat = user.coordinate.latitude - .01;
     let long = user.coordinate.longitude + .01;
 
-
-
     this.setState({ region: {
       latitude: lat,
       longitude: long,
@@ -251,40 +279,131 @@ class MainMap extends Component {
 
   onCalloutClick(user) {
     this.togglePopup(false);
-    this.props.toggleBiomodal();
+    this.togglePopup2(true);
+    this.scootAvatar(user);
+  }
+
+  onCalloutClick2(user) {
+    this.togglePopup2(false);
+    this.unScootAvatar(user);
   }
 
   popupRender() {
     if (this.props.user) {
       let user = this.props.user.user;
       return (
-        <TouchableWithoutFeedback
-          onPress={() => this.onCalloutClick(user)}>
-          <View
-            style={styles.popupContainer}>
-            <Text style={styles.popupText1}>
-              {user.first_name} {user.last_name}
-            </Text>
-            <Text style={styles.popupText2}>
-              {user.title} at {user.company}
-            </Text>
-            <View>
-              <Text style={styles.popupText3}>
-                Top Skills:
-              </Text>
-              {user.skills.map((skill, index) => {
-                return (
-                  <Text
-                    key={index}
-                    style={styles.popupText4}>
-                    {skill}
+        <View>
+          <Card>
+            <CardSection>
+              <View
+                style={styles.popupContainer}>
+                <Text style={styles.popupText1}>
+                  {user.first_name} {user.last_name}
+                </Text>
+                <Text style={styles.popupText2}>
+                  {user.title} at {user.company}
+                </Text>
+                <View>
+                  <Text style={styles.popupText3}>
+                    Top Skills:
                   </Text>
-                );
-              })}
+                  {user.skills.map((skill, index) => {
+                    return (
+                      <Text
+                        key={index}
+                        style={styles.popupText4}>
+                        {skill}
+                      </Text>
+                    );
+                  })}
+                </View>
+              </View>
+            </CardSection>
+          </Card>
+          <TouchableWithoutFeedback
+          onPress={() => this.onCalloutClick(user)}>
+            <View>
+              <Text style={styles.popupText5}>FULL PROFILE</Text>
             </View>
-            <Text style={styles.popupText5}>FULL PROFILE</Text>
-          </View>
-        </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback>
+        </View>
+      )
+    }
+  }
+
+  scootAvatar(user) {
+    let lat = user.coordinate.latitude - .035;
+    let long = user.coordinate.longitude + .01;
+
+    this.setState({ region: {
+      latitude: lat,
+      longitude: long,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+      },
+    });
+  }
+
+  unScootAvatar(user) {
+    let lat = user.coordinate.latitude - .01;
+    let long = user.coordinate.longitude + .01;
+
+    this.setState({ region: {
+      latitude: lat,
+      longitude: long,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+      },
+    });
+  }
+
+  popupRender2() {
+    if (this.props.user) {
+      let user = this.props.user.user;
+
+      return (
+        <View>
+          <Card>
+            <CardSection>
+              <View>
+                <View
+                  style={styles.popupContainer}>
+                  <Text style={styles.popupText1}>
+                    {user.first_name} {user.last_name}
+                  </Text>
+                  <Text style={styles.popupText2}>
+                    {user.title} at {user.company}
+                  </Text>
+                  <View>
+                    <Text style={styles.popupText3}>
+                      Top Skills:
+                    </Text>
+                    {user.skills.map((skill, index) => {
+                      return (
+                        <Text
+                          key={index}
+                          style={styles.popupText4}>
+                          {skill}
+                        </Text>
+                      );
+                    })}
+                  </View>
+                </View>
+              </View>
+            </CardSection>
+            <CardSection>
+              <Button
+                text="Send Message"
+              />
+            </CardSection>
+          </Card>
+          <TouchableWithoutFeedback
+          onPress={() => this.onCalloutClick2(user)}>
+            <View>
+              <Text style={styles.popupText5}>CLOSE</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
       )
     }
   }
@@ -317,17 +436,18 @@ class MainMap extends Component {
               </MapView.Marker>
             ))}
           </MapView>
-          <BioModal
-            visible={this.props.showModal}
-            user={this.props.user}
-          >
-          </BioModal>
         </View>
         <Animated.View
           style={[styles.popup,
             {transform: [{translateY: this.state.bounceValue}]}]}
         >
           {this.popupRender()}
+        </Animated.View>
+        <Animated.View
+          style={[styles.popup2,
+            {transform: [{translateY: this.state.bounceValue2}]}]}
+        >
+          {this.popupRender2()}
         </Animated.View>
       </View>
     );
@@ -353,7 +473,15 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     backgroundColor: '#fff',
-    height: 190,
+    height: 225,
+  },
+  popup2: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: '#fff',
+    height: 475,
   },
   avatarImageStyle: {
     height: 150,
@@ -382,9 +510,10 @@ const styles = StyleSheet.create({
   },
   popupText5: {
     padding: 10,
-    fontStyle: 'italic',
     fontSize: 10,
+    fontWeight: 'bold',
     alignSelf: 'center',
+    backgroundColor: 'transparent',
   },
 });
 
