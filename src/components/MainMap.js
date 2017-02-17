@@ -42,7 +42,7 @@ let users = [
     skills: ["Biting", "Cross-Eyes", "Q-Tips"],
     title: "Front-End Engineer",
     company: "Tacocat Studio",
-    bio: "My name is Appa",
+    bio: "My name is Appa. Duis consequat duis consequat culpa minim commodo minim do magna id aliquip consectetur do. Eu minim exercitation magna mollit sunt.",
     avatarUrl: "https://s-media-cache-ak0.pinimg.com/736x/58/2b/fa/582bfac8dab69c53984c2fa8642db942.jpg",
     coordinate: {
       longitude: -122.6804352795281,
@@ -56,7 +56,7 @@ let users = [
     skills: ["Ears", "Climbing", "Baby Mice"],
     title: "Mobile/Web Developer",
     company: "PopArt",
-    bio: "My name is Eli",
+    bio: "My name is Eli. Duis consequat duis consequat culpa minim commodo minim do magna id aliquip consectetur do. Eu minim exercitation magna mollit sunt.",
     avatarUrl: "https://s-media-cache-ak0.pinimg.com/736x/85/a7/39/85a739f5737ceced2aedbb8f31178d74.jpg",
     coordinate: {
       longitude: -122.6927766289744,
@@ -70,7 +70,7 @@ let users = [
     skills: ["Sneezing", "Dinner", "Mutton Chops"],
     title: "Operations Administrator",
     company: "Rigado, LLC",
-    bio: "My name is Breakfast",
+    bio: "My name is Breakfast. Duis consequat duis consequat culpa minim commodo minim do magna id aliquip consectetur do. Eu minim exercitation magna mollit sunt.",
     avatarUrl: "https://pbs.twimg.com/profile_images/506522217052528640/wBUjUJSK_400x400.jpeg",
     coordinate: {
       longitude: -122.6799167354337,
@@ -84,7 +84,7 @@ let users = [
     skills: ["Subaru", "Porch Lights", "Picking Fights"],
     title: "QA Engineer",
     company: "+QA",
-    bio: "My name is QueeQueg",
+    bio: "My name is QueeQueg. Duis consequat duis consequat culpa minim commodo minim do magna id aliquip consectetur do. Eu minim exercitation magna mollit sunt.",
     avatarUrl: "https://pbs.twimg.com/profile_images/708067740888801280/7rTsSuBP.jpg",
     coordinate: {
       longitude: -122.6789833560638,
@@ -98,7 +98,7 @@ let users = [
     skills: ["Rocks", "Star Trek", "Other Cats"],
     title: "Geologist",
     company: "USACE",
-    bio: "My name is Chester",
+    bio: "My name is Chester. Duis consequat duis consequat culpa minim commodo minim do magna id aliquip consectetur do. Eu minim exercitation magna mollit sunt.",
     avatarUrl: "https://pbs.twimg.com/profile_images/668439459986350081/gfVktJWg.jpg",
     coordinate: {
       longitude: -122.6861392645663,
@@ -112,7 +112,7 @@ let users = [
     skills: ["Tattoos", "Doritos", "Ska"],
     title: "Product Owner",
     company: "Tacocat Studios",
-    bio: "My name is Riff-Raff",
+    bio: "My name is Riff-Raff. Duis consequat duis consequat culpa minim commodo minim do magna id aliquip consectetur do. Eu minim exercitation magna mollit sunt.",
     avatarUrl: "https://ih1.redbubble.net/image.73670090.0092/flat,1000x1000,075,f.u2.jpg",
     coordinate: {
       longitude: -122.6968212729106,
@@ -126,7 +126,7 @@ let users = [
     skills: ["Green Shakes", "Charcuterie", "Drones"],
     title: "Security Engineer",
     company: "Acceptto",
-    bio: "My name is Lil' Douggie",
+    bio: "My name is Lil' Douggie. Duis consequat duis consequat culpa minim commodo minim do magna id aliquip consectetur do. Eu minim exercitation magna mollit sunt.",
     avatarUrl: "https://s-media-cache-ak0.pinimg.com/236x/1b/92/e2/1b92e2949becda1f180d46fc4b546690.jpg",
     coordinate: {
       longitude: -122.6551303277222,
@@ -140,7 +140,7 @@ let users = [
     skills: ["Cigarettes", "PBR", "Thrash Brass"],
     title: "Graphic Designer",
     company: "SquareSpace",
-    bio: "My name is Feli",
+    bio: "My name is Feli. Duis consequat duis consequat culpa minim commodo minim do magna id aliquip consectetur do. Eu minim exercitation magna mollit sunt.",
     avatarUrl: "https://s-media-cache-ak0.pinimg.com/originals/95/ed/a7/95eda7740e1745ccd6ac85250e7b42f6.jpg",
     coordinate: {
       longitude: -122.6635307420512,
@@ -154,7 +154,7 @@ let users = [
     skills: ["String", "Donuts", "Reeses"],
     title: "Marketing Analyst",
     company: "Cars.com",
-    bio: "My name is Zoe",
+    bio: "My name is Zoe. Duis consequat duis consequat culpa minim commodo minim do magna id aliquip consectetur do. Eu minim exercitation magna mollit sunt.",
     avatarUrl: "https://s-media-cache-ak0.pinimg.com/736x/34/ba/db/34badbcd09831ed25743cb2850177737.jpg",
     coordinate: {
       longitude: -122.6758720914976,
@@ -168,7 +168,7 @@ let users = [
     skills: ["Dim Sum", "Kibble", "Fusion"],
     title: "Product Designer",
     company: "EyeCue Lab",
-    bio: "My name is Bohdi",
+    bio: "My name is Bohdi. Duis consequat duis consequat culpa minim commodo minim do magna id aliquip consectetur do. Eu minim exercitation magna mollit sunt.",
     avatarUrl: "https://www.sturbridgeyankee.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/b/r/brown_tabby_cat_1.jpg",
     coordinate: {
       longitude: -122.6698569800027,
@@ -198,7 +198,7 @@ class MainMap extends Component {
 
     this.state = {
       bounceValue: new Animated.Value(225),
-      bounceValue2: new Animated.Value(475),
+      bounceValue2: new Animated.Value(450),
       markers: [],
       region: {
         latitude: 45.526977,
@@ -242,7 +242,7 @@ class MainMap extends Component {
     }
 
     if (!toggler) {
-      toValue = 475;
+      toValue = 450;
       popupHidden2 = true;
     }
 
@@ -262,25 +262,29 @@ class MainMap extends Component {
   }
 
   onMarkerClick(user) {
-    let lat = user.coordinate.latitude - .01;
-    let long = user.coordinate.longitude + .01;
+    if (!popupHidden2) {
+      return;
+    } else {
+      let lat = user.coordinate.latitude - .01;
+      let long = user.coordinate.longitude + .01;
 
-    this.setState({ region: {
-      latitude: lat,
-      longitude: long,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-      },
-    });
+      this.setState({ region: {
+        latitude: lat,
+        longitude: long,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+        },
+      });
 
-    this.togglePopup(true);
-    this.props.selectUser({ user });
+      this.togglePopup(true);
+      this.props.selectUser({ user });
+    }
   }
 
   onCalloutClick(user) {
     this.togglePopup(false);
-    this.togglePopup2(true);
     this.scootAvatar(user);
+    this.togglePopup2(true);
   }
 
   onCalloutClick2(user) {
@@ -332,7 +336,7 @@ class MainMap extends Component {
   }
 
   scootAvatar(user) {
-    let lat = user.coordinate.latitude - .035;
+    let lat = user.coordinate.latitude - .0345;
     let long = user.coordinate.longitude + .01;
 
     this.setState({ region: {
@@ -374,6 +378,9 @@ class MainMap extends Component {
                   <Text style={styles.popupText2}>
                     {user.title} at {user.company}
                   </Text>
+                  <Text style={styles.popupText6}>
+                    {user.bio}
+                  </Text>
                   <View>
                     <Text style={styles.popupText3}>
                       Top Skills:
@@ -388,12 +395,15 @@ class MainMap extends Component {
                       );
                     })}
                   </View>
+                  <Text style={styles.popupText6}>
+                    Availability: Mon - Fri
+                  </Text>
                 </View>
               </View>
             </CardSection>
             <CardSection>
               <Button
-                text="Send Message"
+              text="Send Message"
               />
             </CardSection>
           </Card>
@@ -481,7 +491,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     backgroundColor: '#fff',
-    height: 475,
+    height: 450,
   },
   avatarImageStyle: {
     height: 150,
@@ -515,6 +525,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: 'transparent',
   },
+  popupText6: {
+    paddingTop: 10,
+    fontSize: 15,
+  }
 });
 
 const mapStateToProps = ({ map }) => {
