@@ -14,7 +14,8 @@ import {
 import {
   Card,
   CardSection,
-  Button
+  Button,
+  Footer
 } from './common';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
@@ -197,7 +198,7 @@ class MainMap extends Component {
     super(props);
 
     this.state = {
-      bounceValue: new Animated.Value(225),
+      bounceValue: new Animated.Value(285),
       bounceValue2: new Animated.Value(450),
       markers: [],
       region: {
@@ -218,7 +219,7 @@ class MainMap extends Component {
     }
 
     if (!toggler) {
-      toValue = 225;
+      toValue = 285;
       popupHidden = true;
     }
 
@@ -297,33 +298,31 @@ class MainMap extends Component {
       let user = this.props.user.user;
       return (
         <View>
-          <Card>
-            <CardSection>
-              <View
-                style={styles.popupContainer}>
-                <Text style={styles.popupText1}>
-                  {user.first_name} {user.last_name}
+          <CardSection>
+            <View
+              style={styles.popupContainer}>
+              <Text style={styles.popupText1}>
+                {user.first_name} {user.last_name}
+              </Text>
+              <Text style={styles.popupText2}>
+                {user.title} at {user.company}
+              </Text>
+              <View>
+                <Text style={styles.popupText3}>
+                  Top Skills:
                 </Text>
-                <Text style={styles.popupText2}>
-                  {user.title} at {user.company}
-                </Text>
-                <View>
-                  <Text style={styles.popupText3}>
-                    Top Skills:
-                  </Text>
-                  {user.skills.map((skill, index) => {
-                    return (
-                      <Text
-                        key={index}
-                        style={styles.popupText4}>
-                        {skill}
-                      </Text>
-                    );
-                  })}
-                </View>
+                {user.skills.map((skill, index) => {
+                  return (
+                    <Text
+                      key={index}
+                      style={styles.popupText4}>
+                      {skill}
+                    </Text>
+                  );
+                })}
               </View>
-            </CardSection>
-          </Card>
+            </View>
+          </CardSection>
           <TouchableWithoutFeedback
           onPress={() => this.onCalloutClick(user)}>
             <View>
@@ -336,7 +335,7 @@ class MainMap extends Component {
   }
 
   scootAvatar(user) {
-    let lat = user.coordinate.latitude - .0345;
+    let lat = user.coordinate.latitude - .033;
     let long = user.coordinate.longitude + .01;
 
     this.setState({ region: {
@@ -367,46 +366,44 @@ class MainMap extends Component {
 
       return (
         <View>
-          <Card>
-            <CardSection>
-              <View>
-                <View
-                  style={styles.popupContainer}>
-                  <Text style={styles.popupText1}>
-                    {user.first_name} {user.last_name}
+          <CardSection>
+            <View>
+              <View
+                style={styles.popupContainer}>
+                <Text style={styles.popupText1}>
+                  {user.first_name} {user.last_name}
+                </Text>
+                <Text style={styles.popupText2}>
+                  {user.title} at {user.company}
+                </Text>
+                <Text style={styles.popupText6}>
+                  {user.bio}
+                </Text>
+                <View>
+                  <Text style={styles.popupText3}>
+                    Top Skills:
                   </Text>
-                  <Text style={styles.popupText2}>
-                    {user.title} at {user.company}
-                  </Text>
-                  <Text style={styles.popupText6}>
-                    {user.bio}
-                  </Text>
-                  <View>
-                    <Text style={styles.popupText3}>
-                      Top Skills:
-                    </Text>
-                    {user.skills.map((skill, index) => {
-                      return (
-                        <Text
-                          key={index}
-                          style={styles.popupText4}>
-                          {skill}
-                        </Text>
-                      );
-                    })}
-                  </View>
-                  <Text style={styles.popupText6}>
-                    Availability: Mon - Fri
-                  </Text>
+                  {user.skills.map((skill, index) => {
+                    return (
+                      <Text
+                        key={index}
+                        style={styles.popupText4}>
+                        {skill}
+                      </Text>
+                    );
+                  })}
                 </View>
+                <Text style={styles.popupText6}>
+                  Availability: Mon - Fri
+                </Text>
               </View>
-            </CardSection>
-            <CardSection>
-              <Button
-              text="Send Message"
-              />
-            </CardSection>
-          </Card>
+            </View>
+          </CardSection>
+          <CardSection>
+            <Button
+            text="Send Message"
+            />
+          </CardSection>
           <TouchableWithoutFeedback
           onPress={() => this.onCalloutClick2(user)}>
             <View>
@@ -459,6 +456,7 @@ class MainMap extends Component {
         >
           {this.popupRender2()}
         </Animated.View>
+        <Footer />
       </View>
     );
   }
@@ -483,7 +481,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     backgroundColor: '#fff',
-    height: 225,
+    height: 285,
   },
   popup2: {
     position: 'absolute',
