@@ -3,6 +3,7 @@ import { Scene, Router } from 'react-native-router-flux';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import MainMap from './components/MainMap';
+import TestMap from './components/TestMap';
 
 const RouterComponent = () => {
   return (

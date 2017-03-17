@@ -21,7 +21,8 @@ import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { selectUser, toggleBiomodal } from '../actions';
 var {height, width} = Dimensions.get('window');
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+
 
 import CustomCallout from './CustomCallout';
 const ASPECT_RATIO = width / height;
@@ -420,6 +421,7 @@ class MainMap extends Component {
       <View style={{flex:1}}>
         <View style={styles.container}>
           <MapView
+            provider={PROVIDER_GOOGLE}
             style={styles.map}
             region={this.state.region}
             onPress={(event) => this.onMapPress()}
