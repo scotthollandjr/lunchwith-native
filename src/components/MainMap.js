@@ -202,12 +202,12 @@ class MainMap extends Component {
       bounceValue: new Animated.Value(285),
       bounceValue2: new Animated.Value(450),
       markers: [],
-      region: {
-        latitude: 45.526977,
-        longitude: -122.683028,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      },
+      region: new MapView.AnimatedRegion({
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      }),
     };
   }
 
@@ -267,16 +267,18 @@ class MainMap extends Component {
     if (!popupHidden2) {
       return;
     } else {
-      let lat = user.coordinate.latitude - .01;
-      let long = user.coordinate.longitude + .01;
+      let lat = user.coordinate.latitude;
+      let long = user.coordinate.longitude;
+      // let lat = user.coordinate.latitude - .01;
+      // let long = user.coordinate.longitude + .01;
 
-      this.setState({ region: {
+      var {region} = this.state;
+      region.timing({
         latitude: lat,
         longitude: long,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-        },
-      });
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      }).start();
 
       this.togglePopup(true);
       this.props.selectUser({ user });
@@ -336,8 +338,8 @@ class MainMap extends Component {
   }
 
   scootAvatar(user) {
-    let lat = user.coordinate.latitude - .033;
-    let long = user.coordinate.longitude + .01;
+    let lat = user.coordinate.latitude - .0113;
+    let long = user.coordinate.longitude;
 
     this.setState({ region: {
       latitude: lat,
@@ -349,8 +351,8 @@ class MainMap extends Component {
   }
 
   unScootAvatar(user) {
-    let lat = user.coordinate.latitude - .01;
-    let long = user.coordinate.longitude + .01;
+    let lat = user.coordinate.latitude + .0113;
+    let long = user.coordinate.longitude;
 
     this.setState({ region: {
       latitude: lat,
@@ -420,10 +422,11 @@ class MainMap extends Component {
     return (
       <View style={{flex:1}}>
         <View style={styles.container}>
-          <MapView
+          <MapView.Animated
             provider={PROVIDER_GOOGLE}
             style={styles.map}
             region={this.state.region}
+            mapType="terrain"
             onPress={(event) => this.onMapPress()}
           >
             {users.map(user => (
@@ -444,7 +447,7 @@ class MainMap extends Component {
                 </MapView.Callout>
               </MapView.Marker>
             ))}
-          </MapView>
+          </MapView.Animated>
         </View>
         <Animated.View
           style={[styles.popup,
